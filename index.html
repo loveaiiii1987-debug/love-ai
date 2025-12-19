@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Love AI</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  background:#f6f7fb;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.app{
+  width:100%;
+  max-width:420px;
+  background:#ffffff;
+  border-radius:24px;
+  padding:20px;
+  box-shadow:0 20px 40px rgba(0,0,0,.08);
+}
+h1{
+  margin:0 0 6px;
+  font-size:22px;
+  text-align:center;
+}
+.subtitle{
+  text-align:center;
+  font-size:14px;
+  color:#666;
+  margin-bottom:20px;
+}
+label{
+  font-size:13px;
+  color:#555;
+}
+input{
+  width:100%;
+  padding:14px;
+  margin:6px 0 14px;
+  border-radius:12px;
+  border:1px solid #ddd;
+  font-size:15px;
+}
+input:focus{
+  outline:none;
+  border-color:#ff5c8a;
+}
+button{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:14px;
+  background:#ff5c8a;
+  color:#fff;
+  font-size:16px;
+  font-weight:600;
+}
+#error{
+  text-align:center;
+  font-size:13px;
+  color:#d33;
+  margin-top:12px;
+}
+.footer{
+  text-align:center;
+  font-size:11px;
+  color:#999;
+  margin-top:16px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <h1>Love AI</h1>
+  <div class="subtitle">AI-based relationship insights</div>
+
+  <label>Your name</label>
+  <input id="name1" placeholder="Enter your name">
+
+  <label>Your date of birth</label>
+  <input type="date" id="dob1">
+
+  <label>Partner name</label>
+  <input id="name2" placeholder="Enter partner name">
+
+  <label>Partner date of birth</label>
+  <input type="date" id="dob2">
+
+  <button onclick="startAI()">See Predictions</button>
+
+  <div id="error"></div>
+
+  <div class="footer">For entertainment purposes only</div>
+</div>
+
+<script>
+function isHumanLikeName(n){
+  n=n.trim();
+  if(!/^[A-Za-z ]+$/.test(n))return false;
+  if(n.length<3||n.length>30)return false;
+  if(/([a-z])\1{2,}/i.test(n))return false;
+  const v=(n.match(/[aeiou]/gi)||[]).length;
+  const c=(n.match(/[bcdfghjklmnpqrstvwxyz]/gi)||[]).length;
+  if(v===0||c/v>4)return false;
+  return true;
+}
+function getAge(d){
+  const b=new Date(d),t=new Date();
+  if(b>t)return false;
+  let a=t.getFullYear()-b.getFullYear();
+  if(t.getMonth()<b.getMonth()||(t.getMonth()==b.getMonth()&&t.getDate()<b.getDate()))a--;
+  if(a<9||a>90)return false;
+  return a;
+}
+function startAI(){
+  const n1=name1.value,n2=name2.value,d1=dob1.value,d2=dob2.value;
+  if(!n1||!n2||!d1||!d2){
+    error.textContent="Please complete all details";
+    return;
+  }
+  if(!isHumanLikeName(n1)||!isHumanLikeName(n2)){
+    error.textContent="Names don’t look valid";
+    return;
+  }
+  const a1=getAge(d1),a2=getAge(d2);
+  if(!a1||!a2){
+    error.textContent="Date of birth not realistic";
+    return;
+  }
+  const love=Math.floor(Math.random()*11)+90;
+  location.href=`result.html?n1=${encodeURIComponent(n1)}&n2=${encodeURIComponent(n2)}&love=${love}&a1=${a1}&a2=${a2}`;
+}
+</script>
+
+</body>
+</html>
