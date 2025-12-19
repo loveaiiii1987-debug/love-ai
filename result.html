@@ -2,71 +2,56 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Love AI Result</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love Prediction</title>
 
 <style>
 body{
   margin:0;
   font-family:system-ui;
-  background:#0f1220;
-  color:#fff;
+  background:linear-gradient(135deg,#ff758c,#ffb3c7);
   min-height:100vh;
-  padding:20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
-.card{
-  max-width:420px;
-  margin:auto;
-  background:#1b1f36;
-  border-radius:20px;
-  padding:20px;
-}
-h1{text-align:center}
-.stat{
-  background:#262a48;
-  border-radius:14px;
-  padding:14px;
-  margin:10px 0;
-}
-.big{
-  font-size:28px;
-  font-weight:700;
-  text-align:center;
-  color:#ff7aa2;
-}
-button{
+.box{
+  background:#fff;
   width:100%;
-  margin-top:18px;
-  padding:14px;
-  border:none;
-  border-radius:14px;
-  background:#ff5c8a;
-  color:#fff;
-  font-size:16px;
+  max-width:420px;
+  padding:24px;
+  border-radius:20px;
 }
+h2{text-align:center;color:#ff3d68}
+p{line-height:1.6}
 </style>
 </head>
 
 <body>
-
-<div class="card">
-  <h1>AI Analysis</h1>
-  <div id="out"></div>
-  <button onclick="location.href='index.html'">Try Again</button>
+<div class="box">
+<h2>AI Relationship Analysis</h2>
+<p id="out"></p>
 </div>
 
 <script>
-const p=new URLSearchParams(location.search);
-out.innerHTML=`
-<div class="big">${p.get("love")}%</div>
-<div class="stat">Compatibility between <b>${p.get("n1")}</b> and <b>${p.get("n2")}</b> is very strong.</div>
-<div class="stat">Long-term emotional stability is predicted.</div>
-<div class="stat">Marriage probability: High</div>
-<div class="stat">Future family life looks positive.</div>
-<div class="stat" style="opacity:.7;font-size:12px">
-AI analysis is probabilistic and for entertainment only.
-</div>`;
-</script>
+const n1=sessionStorage.getItem("n1")||"You";
+const n2=sessionStorage.getItem("n2")||"Partner";
 
+const predictions=[
+`${n1} and ${n2} share strong emotional compatibility. Long-term commitment is possible with effort.`,
+`This connection shows passion but also conflict. Communication will decide the future.`,
+`The bond is intense but unstable. Not all relationships are meant to last forever.`,
+`There is genuine affection here. Marriage is possible, but timing matters.`,
+`Strong attraction exists, but life goals may differ over time.`
+];
+
+const kids=[0,1,2,3,4];
+const percent=Math.floor(55+Math.random()*45);
+
+document.getElementById("out").innerHTML=
+`❤️ Love Strength: <b>${percent}%</b><br><br>`+
+predictions[Math.floor(Math.random()*predictions.length)]+
+`<br><br>👶 Possible children: ${kids[Math.floor(Math.random()*kids.length)]}`;
+</script>
 </body>
 </html>
