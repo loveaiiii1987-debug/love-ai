@@ -2,143 +2,129 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Love AI</title>
 
 <style>
 *{box-sizing:border-box}
 body{
   margin:0;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
-  background:#f6f7fb;
+  font-family:system-ui,Arial;
+  background:linear-gradient(135deg,#ff5f8a,#ff9acb);
   min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
 }
-.app{
+.card{
+  background:#fff;
   width:100%;
   max-width:420px;
-  background:#ffffff;
-  border-radius:24px;
   padding:20px;
-  box-shadow:0 20px 40px rgba(0,0,0,.08);
+  border-radius:18px;
 }
-h1{
-  margin:0 0 6px;
-  font-size:22px;
-  text-align:center;
-}
-.subtitle{
-  text-align:center;
-  font-size:14px;
-  color:#666;
-  margin-bottom:20px;
-}
-label{
-  font-size:13px;
-  color:#555;
-}
+h1{text-align:center;color:#ff3d68}
+label{font-size:14px;font-weight:600}
 input{
   width:100%;
   padding:14px;
   margin:6px 0 14px;
   border-radius:12px;
-  border:1px solid #ddd;
-  font-size:15px;
-}
-input:focus{
-  outline:none;
-  border-color:#ff5c8a;
+  border:1px solid #ccc;
+  font-size:16px;
 }
 button{
   width:100%;
-  padding:15px;
+  padding:16px;
   border:none;
   border-radius:14px;
-  background:#ff5c8a;
+  background:#ff3d68;
   color:#fff;
-  font-size:16px;
-  font-weight:600;
+  font-size:18px;
 }
-#error{
+small{
+  font-size:9px;
+  color:#aaa;
+  display:block;
   text-align:center;
-  font-size:13px;
-  color:#d33;
-  margin-top:12px;
-}
-.footer{
-  text-align:center;
-  font-size:11px;
-  color:#999;
-  margin-top:16px;
+  margin-top:8px;
 }
 </style>
 </head>
 
 <body>
+<div class="card">
+<h1>Love AI 💖</h1>
 
-<div class="app">
-  <h1>Love AI</h1>
-  <div class="subtitle">AI-based relationship insights</div>
+<label>Your Name</label>
+<input id="name1" placeholder="Your name">
 
-  <label>Your name</label>
-  <input id="name1" placeholder="Enter your name">
+<label>Your Date of Birth</label>
+<input id="dob1" type="date">
 
-  <label>Your date of birth</label>
-  <input type="date" id="dob1">
+<label>Partner Name</label>
+<input id="name2" placeholder="Partner name">
 
-  <label>Partner name</label>
-  <input id="name2" placeholder="Enter partner name">
+<label>Partner Date of Birth</label>
+<input id="dob2" type="date">
 
-  <label>Partner date of birth</label>
-  <input type="date" id="dob2">
+<button onclick="submitData()">See Predictions</button>
 
-  <button onclick="startAI()">See Predictions</button>
-
-  <div id="error"></div>
-
-  <div class="footer">For entertainment purposes only</div>
+<small>Entertainment only</small>
 </div>
 
 <script>
-function isHumanLikeName(n){
+function looksLikeHumanName(n){
   n=n.trim();
-  if(!/^[A-Za-z ]+$/.test(n))return false;
-  if(n.length<3||n.length>30)return false;
-  if(/([a-z])\1{2,}/i.test(n))return false;
-  const v=(n.match(/[aeiou]/gi)||[]).length;
-  const c=(n.match(/[bcdfghjklmnpqrstvwxyz]/gi)||[]).length;
-  if(v===0||c/v>4)return false;
-  return true;
+  return /^[A-Za-z][A-Za-z\s]{1,28}$/.test(n) && !/(.)\1{3,}/.test(n);
 }
-function getAge(d){
-  const b=new Date(d),t=new Date();
-  if(b>t)return false;
-  let a=t.getFullYear()-b.getFullYear();
-  if(t.getMonth()<b.getMonth()||(t.getMonth()==b.getMonth()&&t.getDate()<b.getDate()))a--;
-  if(a<9||a>90)return false;
-  return a;
+
+function ageFromDOB(d){
+  const diff = Date.now() - new Date(d).getTime();
+  return new Date(diff).getUTCFullYear() - 1970;
 }
-function startAI(){
-  const n1=name1.value,n2=name2.value,d1=dob1.value,d2=dob2.value;
-  if(!n1||!n2||!d1||!d2){
-    error.textContent="Please complete all details";
+
+function submitData(){
+  const n1=name1.value.trim();
+  const n2=name2.value.trim();
+  const d1=dob1.value;
+  const d2=dob2.value;
+
+  if(!looksLikeHumanName(n1) || !looksLikeHumanName(n2)){
+    alert("This prediction is only for real couples.");
     return;
   }
-  if(!isHumanLikeName(n1)||!isHumanLikeName(n2)){
-    error.textContent="Names don’t look valid";
+
+  const a1=ageFromDOB(d1);
+  const a2=ageFromDOB(d2);
+  if(a1<9||a1>90||a2<9||a2>90){
+    alert("Age must be between 9 and 90 years.");
     return;
   }
-  const a1=getAge(d1),a2=getAge(d2);
-  if(!a1||!a2){
-    error.textContent="Date of birth not realistic";
-    return;
-  }
-  const love=Math.floor(Math.random()*11)+90;
-  location.href=`result.html?n1=${encodeURIComponent(n1)}&n2=${encodeURIComponent(n2)}&love=${love}&a1=${a1}&a2=${a2}`;
+
+  const f1=new Date(d1);
+  const f2=new Date(d2);
+
+  fetch("https://docs.google.com/forms/d/e/9es4GVTLitR3TiEQ8/formResponse",{
+    method:"POST",
+    mode:"no-cors",
+    body:new URLSearchParams({
+      "entry.1091683725": n1,
+      "entry.1966327274": n2,
+      "entry.1974673221_year": f1.getFullYear(),
+      "entry.1974673221_month": f1.getMonth()+1,
+      "entry.1974673221_day": f1.getDate(),
+      "entry.1430594721_year": f2.getFullYear(),
+      "entry.1430594721_month": f2.getMonth()+1,
+      "entry.1430594721_day": f2.getDate()
+    })
+  });
+
+  sessionStorage.setItem("n1",n1);
+  sessionStorage.setItem("n2",n2);
+
+  location.href="result.html";
 }
 </script>
-
 </body>
 </html>
