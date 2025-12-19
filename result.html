@@ -37,21 +37,21 @@ p{line-height:1.6}
 const n1=sessionStorage.getItem("n1")||"You";
 const n2=sessionStorage.getItem("n2")||"Partner";
 
-const predictions=[
-`${n1} and ${n2} share strong emotional compatibility. Long-term commitment is possible with effort.`,
-`This connection shows passion but also conflict. Communication will decide the future.`,
-`The bond is intense but unstable. Not all relationships are meant to last forever.`,
-`There is genuine affection here. Marriage is possible, but timing matters.`,
-`Strong attraction exists, but life goals may differ over time.`
+const texts=[
+`${n1} and ${n2} have strong emotional alignment.`,
+`This relationship shows attraction but also challenges.`,
+`Long-term success depends on communication.`,
+`The bond is intense but may face instability.`,
+`Marriage is possible, but timing matters.`
 ];
 
-const kids=[0,1,2,3,4];
 const percent=Math.floor(55+Math.random()*45);
+const kids=Math.floor(Math.random()*5);
 
-document.getElementById("out").innerHTML=
+out.innerHTML=
 `❤️ Love Strength: <b>${percent}%</b><br><br>`+
-predictions[Math.floor(Math.random()*predictions.length)]+
-`<br><br>👶 Possible children: ${kids[Math.floor(Math.random()*kids.length)]}`;
+texts[Math.floor(Math.random()*texts.length)]+
+`<br><br>👶 Possible children: ${kids}`;
 </script>
 </body>
 </html>
